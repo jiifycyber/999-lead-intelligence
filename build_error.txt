@@ -1,0 +1,26 @@
+Compiling lib/main.dart for the Web...                          
+Unexpected wasm dry run failure (250):
+
+../../runtime/vm/object.h: 5991: error: unreachable code
+version=3.12.2 (stable) (Tue Jun 9 01:11:39 2026 -0700) on "linux_x64"
+pid=66265, thread=66289, isolate_group=main(0x5ac296ff1270), isolate=(nil)((nil))
+os=linux, arch=x64, comp=no, sim=no
+isolate_instructions=7e4cb8a12ec0, vm_instructions=7e4cb8a0c000
+fp=7e4ca977ea60, sp=7e4ca977ea40, pc=5ac25b1037e6
+  pc 0x00005ac25b1037e6 fp 0x00007e4ca977ea60 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4a47e6
+  pc 0x00005ac25aed88b2 fp 0x00007e4ca977eb40 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x2798b2
+  pc 0x00005ac25b108f97 fp 0x00007e4ca977eb60 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4a9f97
+  pc 0x00005ac25b14be9b fp 0x00007e4ca977ebe0 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4ece9b
+  pc 0x00005ac25b141771 fp 0x00007e4ca977ec80 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4e2771
+  pc 0x00005ac25b14c0ec fp 0x00007e4ca977ed00 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4ed0ec
+  pc 0x00005ac25b129217 fp 0x00007e4ca977ed60 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4ca217
+  pc 0x00005ac25b129482 fp 0x00007e4ca977ed90 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4ca482
+  pc 0x00005ac25b101ea9 fp 0x00007e4ca977ee50 /home/cloudguardx/snap/flutter/common/flutter/bin/cache/dart-sdk/bin/dartaotruntime+0x4a2ea9
+  pc 0x00007e4cb94a407a fp 0x00007e4ca977ef30 /usr/lib/x86_64-linux-gnu/libc.so.6+0xa407a
+-- End of DumpStackTrace
+
+Use --no-wasm-dry-run to disable these warnings.
+Font asset "MaterialIcons-Regular.otf" was tree-shaken, reducing it from 1645184 to 9304 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Font asset "CupertinoIcons.ttf" was tree-shaken, reducing it from 257628 to 1472 bytes (99.4% reduction). Tree-shaking can be disabled by providing the --no-tree-shake-icons flag when building your app.
+Compiling lib/main.dart for the Web...                             34.7s
+✓ Built build/web
