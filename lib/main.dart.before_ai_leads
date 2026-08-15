@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'features/leads/leads_screen.dart';
 
 void main() {
   runApp(const MarketIntelligenceApp());
@@ -731,10 +730,6 @@ class ModulePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (title == 'Leads') {
-      return const LeadsScreen();
-    }
-
     return SingleChildScrollView(
       padding: const EdgeInsets.all(28),
       child: Center(
