@@ -1,0 +1,2 @@
+import 'package:flutter/material.dart';
+class AuthScreen extends StatelessWidget { const AuthScreen({super.key}); @override Widget build(BuildContext context)=>const Scaffold(body:Center(child:Text('Authentication module – connect Supabase Auth for production login.'))); }
