@@ -1,0 +1,1045 @@
+import 'package:flutter/material.dart';
+
+import '../admin/admin_screen.dart';
+import '../analytics/analytics_screen.dart';
+import '../automation/automation_screen.dart';
+import '../communications/communications_screen.dart';
+import '../crm/crm_screen.dart';
+import '../leads/leads_screen.dart';
+import '../marketing/marketing_screen.dart';
+import '../seo/seo_screen.dart';
+import '../settings/settings_screen.dart';
+
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({super.key});
+
+  static const Color _bg = Color(0xFF050812);
+  static const Color _panel = Color(0xFF0C1324);
+  static const Color _panel2 = Color(0xFF111B32);
+  static const Color _purple = Color(0xFF7657FF);
+  static const Color _blue = Color(0xFF22A7FF);
+  static const Color _cyan = Color(0xFF28E7FF);
+  static const Color _green = Color(0xFF32E6A1);
+
+  void _open(BuildContext context, Widget screen) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => screen),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final modules = <_IntelligenceModule>[
+      _IntelligenceModule(
+        title: 'Lead Intelligence',
+        subtitle: 'Capture, score, prioritize and manage prospects',
+        icon: Icons.hub_outlined,
+        badge: 'LIVE',
+        onTap: () => _open(context, const LeadsScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'CRM Intelligence',
+        subtitle: 'Customer pipeline, follow-ups and journey control',
+        icon: Icons.account_tree_outlined,
+        badge: 'ACTIVE',
+        onTap: () => _open(context, const CrmScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Marketing Intelligence',
+        subtitle: 'Campaigns, content and growth intelligence',
+        icon: Icons.campaign_outlined,
+        badge: 'AI',
+        onTap: () => _open(context, const MarketingScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Search Intelligence',
+        subtitle: 'Google Search Console, keywords and SEO signals',
+        icon: Icons.travel_explore_outlined,
+        badge: 'GOOGLE',
+        onTap: () => _open(context, const SeoScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Automation Core',
+        subtitle: 'Workflow automation and intelligent follow-ups',
+        icon: Icons.auto_awesome_outlined,
+        badge: 'AUTO',
+        onTap: () => _open(context, const AutomationScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Communications',
+        subtitle: 'SMS, email, calls and customer conversations',
+        icon: Icons.forum_outlined,
+        badge: 'OMNI',
+        onTap: () => _open(context, const CommunicationsScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Analytics Engine',
+        subtitle: 'Business intelligence, reporting and forecasting',
+        icon: Icons.query_stats_outlined,
+        badge: 'DATA',
+        onTap: () => _open(context, const AnalyticsScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'Administration',
+        subtitle: 'Users, permissions and system management',
+        icon: Icons.admin_panel_settings_outlined,
+        badge: 'SECURE',
+        onTap: () => _open(context, const AdminScreen()),
+      ),
+      _IntelligenceModule(
+        title: 'System Settings',
+        subtitle: 'Integrations, configuration and platform controls',
+        icon: Icons.tune_outlined,
+        badge: 'CORE',
+        onTap: () => _open(context, const SettingsScreen()),
+      ),
+    ];
+
+    return Scaffold(
+      backgroundColor: _bg,
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final desktop = constraints.maxWidth >= 1050;
+
+            return Stack(
+              children: [
+                const Positioned.fill(
+                  child: _BackgroundGrid(),
+                ),
+                SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: desktop ? 34 : 16,
+                    vertical: 20,
+                  ),
+                  child: Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1500),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _TopBar(desktop: desktop),
+                          const SizedBox(height: 22),
+                          _HeroPanel(desktop: desktop),
+                          const SizedBox(height: 18),
+                          _SystemStrip(desktop: desktop),
+                          const SizedBox(height: 28),
+                          Row(
+                            children: [
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'INTELLIGENCE NETWORK',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: 1.2,
+                                      ),
+                                    ),
+                                    SizedBox(height: 5),
+                                    Text(
+                                      'Select a module to enter its live command environment.',
+                                      style: TextStyle(
+                                        color: Color(0xFF8592AA),
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 7,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: _green.withValues(alpha: .08),
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(
+                                    color: _green.withValues(alpha: .28),
+                                  ),
+                                ),
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    _PulseDot(),
+                                    SizedBox(width: 7),
+                                    Text(
+                                      'SYSTEM ONLINE',
+                                      style: TextStyle(
+                                        color: _green,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w800,
+                                        letterSpacing: .8,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: modules.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: desktop
+                                  ? 3
+                                  : constraints.maxWidth >= 650
+                                      ? 2
+                                      : 1,
+                              crossAxisSpacing: 14,
+                              mainAxisSpacing: 14,
+                              childAspectRatio: desktop ? 1.72 : 1.72,
+                            ),
+                            itemBuilder: (context, index) {
+                              return _ModuleCard(module: modules[index]);
+                            },
+                          ),
+                          const SizedBox(height: 26),
+                          _CommandPanel(
+                            onLeads: () => _open(context, const LeadsScreen()),
+                            onSeo: () => _open(context, const SeoScreen()),
+                            onAnalytics: () =>
+                                _open(context, const AnalyticsScreen()),
+                            onAutomation: () =>
+                                _open(context, const AutomationScreen()),
+                          ),
+                          const SizedBox(height: 24),
+                          Center(
+                            child: Text(
+                              '999 INTELLIGENCE NETWORK  •  LEAD INTELLIGENCE CORE',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white.withValues(alpha: .28),
+                                fontSize: 10,
+                                fontWeight: FontWeight.w700,
+                                letterSpacing: 1.4,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _TopBar extends StatelessWidget {
+  final bool desktop;
+
+  const _TopBar({required this.desktop});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 44,
+          height: 44,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(13),
+            gradient: const LinearGradient(
+              colors: [
+                DashboardScreen._purple,
+                DashboardScreen._blue,
+              ],
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: DashboardScreen._purple.withValues(alpha: .28),
+                blurRadius: 22,
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.auto_awesome,
+            color: Colors.white,
+            size: 22,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                '999 LEAD INTELLIGENCE',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 17,
+                  letterSpacing: .7,
+                ),
+              ),
+              if (desktop)
+                const Text(
+                  'Advanced Business Intelligence Operating System',
+                  style: TextStyle(
+                    color: Color(0xFF76839A),
+                    fontSize: 11,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const _TopStatus(
+          icon: Icons.shield_outlined,
+          text: 'SECURE',
+        ),
+        if (desktop) ...[
+          const SizedBox(width: 8),
+          const _TopStatus(
+            icon: Icons.cloud_done_outlined,
+            text: 'CONNECTED',
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _HeroPanel extends StatelessWidget {
+  final bool desktop;
+
+  const _HeroPanel({required this.desktop});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(desktop ? 30 : 22),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(24),
+        gradient: LinearGradient(
+          colors: [
+            DashboardScreen._panel2.withValues(alpha: .97),
+            const Color(0xFF11102D),
+            const Color(0xFF071B29),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border.all(
+          color: DashboardScreen._purple.withValues(alpha: .24),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: DashboardScreen._purple.withValues(alpha: .10),
+            blurRadius: 35,
+            spreadRadius: 2,
+          ),
+        ],
+      ),
+      child: desktop
+          ? const Row(
+              children: [
+                Expanded(child: _HeroText()),
+                SizedBox(width: 40),
+                _AiCore(),
+              ],
+            )
+          : const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _HeroText(),
+                SizedBox(height: 22),
+                _AiCore(),
+              ],
+            ),
+    );
+  }
+}
+
+class _HeroText extends StatelessWidget {
+  const _HeroText();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'AI BUSINESS GROWTH\nCOMMAND CENTER',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 29,
+            height: 1.05,
+            fontWeight: FontWeight.w900,
+            letterSpacing: -.5,
+          ),
+        ),
+        SizedBox(height: 13),
+        Text(
+          'One intelligent operating layer for leads, customers, marketing, '
+          'search performance, communications, automation and analytics.',
+          style: TextStyle(
+            color: Color(0xFFA5AFC2),
+            fontSize: 14,
+            height: 1.55,
+          ),
+        ),
+        SizedBox(height: 18),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _MiniChip(
+              icon: Icons.memory,
+              text: 'AI READY',
+            ),
+            _MiniChip(
+              icon: Icons.travel_explore,
+              text: 'SEARCH DATA',
+            ),
+            _MiniChip(
+              icon: Icons.sync,
+              text: 'LIVE SYSTEM',
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _AiCore extends StatelessWidget {
+  const _AiCore();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 220,
+      height: 145,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(22),
+        color: Colors.black.withValues(alpha: .18),
+        border: Border.all(
+          color: DashboardScreen._cyan.withValues(alpha: .18),
+        ),
+      ),
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            width: 104,
+            height: 104,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: DashboardScreen._purple.withValues(alpha: .35),
+                width: 1.5,
+              ),
+            ),
+          ),
+          Container(
+            width: 76,
+            height: 76,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  DashboardScreen._cyan.withValues(alpha: .40),
+                  DashboardScreen._purple.withValues(alpha: .12),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: DashboardScreen._cyan.withValues(alpha: .18),
+                  blurRadius: 30,
+                ),
+              ],
+            ),
+            child: const Icon(
+              Icons.psychology_alt_outlined,
+              color: DashboardScreen._cyan,
+              size: 33,
+            ),
+          ),
+          const Positioned(
+            bottom: 11,
+            child: Text(
+              'INTELLIGENCE CORE',
+              style: TextStyle(
+                color: Color(0xFF74839A),
+                fontSize: 9,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 1.2,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SystemStrip extends StatelessWidget {
+  final bool desktop;
+
+  const _SystemStrip({required this.desktop});
+
+  @override
+  Widget build(BuildContext context) {
+    final items = const [
+      _SystemItem(
+        icon: Icons.travel_explore,
+        title: 'Search Console',
+        status: 'CONNECTED',
+      ),
+      _SystemItem(
+        icon: Icons.psychology_outlined,
+        title: 'AI Engine',
+        status: 'READY',
+      ),
+      _SystemItem(
+        icon: Icons.storage_outlined,
+        title: 'Data Layer',
+        status: 'ONLINE',
+      ),
+      _SystemItem(
+        icon: Icons.security_outlined,
+        title: 'Security',
+        status: 'PROTECTED',
+      ),
+    ];
+
+    if (!desktop) {
+      return Wrap(
+        spacing: 10,
+        runSpacing: 10,
+        children: items
+            .map(
+              (e) => SizedBox(
+                width: 165,
+                child: e,
+              ),
+            )
+            .toList(),
+      );
+    }
+
+    return Row(
+      children: items
+          .map(
+            (e) => Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: e,
+              ),
+            ),
+          )
+          .toList(),
+    );
+  }
+}
+
+class _SystemItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String status;
+
+  const _SystemItem({
+    required this.icon,
+    required this.title,
+    required this.status,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(13),
+      decoration: BoxDecoration(
+        color: DashboardScreen._panel.withValues(alpha: .78),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: .06),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: DashboardScreen._cyan,
+            size: 19,
+          ),
+          const SizedBox(width: 9),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  status,
+                  style: const TextStyle(
+                    color: DashboardScreen._green,
+                    fontSize: 8,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: .7,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ModuleCard extends StatefulWidget {
+  final _IntelligenceModule module;
+
+  const _ModuleCard({required this.module});
+
+  @override
+  State<_ModuleCard> createState() => _ModuleCardState();
+}
+
+class _ModuleCardState extends State<_ModuleCard> {
+  bool hover = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => hover = true),
+      onExit: (_) => setState(() => hover = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        transform: Matrix4.translationValues(0, hover ? -3 : 0, 0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(19),
+          gradient: LinearGradient(
+            colors: hover
+                ? [
+                    DashboardScreen._panel2,
+                    const Color(0xFF121C39),
+                  ]
+                : [
+                    DashboardScreen._panel,
+                    const Color(0xFF0A1120),
+                  ],
+          ),
+          border: Border.all(
+            color: hover
+                ? DashboardScreen._purple.withValues(alpha: .55)
+                : Colors.white.withValues(alpha: .07),
+          ),
+          boxShadow: hover
+              ? [
+                  BoxShadow(
+                    color: DashboardScreen._purple.withValues(alpha: .12),
+                    blurRadius: 24,
+                  ),
+                ]
+              : [],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(19),
+            onTap: widget.module.onTap,
+            child: Padding(
+              padding: const EdgeInsets.all(17),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 42,
+                        height: 42,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          gradient: LinearGradient(
+                            colors: [
+                              DashboardScreen._purple.withValues(alpha: .30),
+                              DashboardScreen._blue.withValues(alpha: .12),
+                            ],
+                          ),
+                        ),
+                        child: Icon(
+                          widget.module.icon,
+                          color: DashboardScreen._cyan,
+                          size: 21,
+                        ),
+                      ),
+                      const Spacer(),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: DashboardScreen._green.withValues(alpha: .08),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          widget.module.badge,
+                          style: const TextStyle(
+                            color: DashboardScreen._green,
+                            fontSize: 8,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: .6,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Spacer(),
+                  Text(
+                    widget.module.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    widget.module.subtitle,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      color: Color(0xFF7F8BA0),
+                      height: 1.35,
+                      fontSize: 10.5,
+                    ),
+                  ),
+                  const SizedBox(height: 9),
+                  const Row(
+                    children: [
+                      Text(
+                        'OPEN MODULE',
+                        style: TextStyle(
+                          color: DashboardScreen._blue,
+                          fontSize: 9,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: .8,
+                        ),
+                      ),
+                      SizedBox(width: 5),
+                      Icon(
+                        Icons.arrow_forward,
+                        color: DashboardScreen._blue,
+                        size: 13,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CommandPanel extends StatelessWidget {
+  final VoidCallback onLeads;
+  final VoidCallback onSeo;
+  final VoidCallback onAnalytics;
+  final VoidCallback onAutomation;
+
+  const _CommandPanel({
+    required this.onLeads,
+    required this.onSeo,
+    required this.onAnalytics,
+    required this.onAutomation,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: DashboardScreen._panel.withValues(alpha: .82),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: DashboardScreen._blue.withValues(alpha: .13),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'QUICK COMMANDS',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 13,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1,
+            ),
+          ),
+          const SizedBox(height: 14),
+          Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: [
+              _QuickButton(
+                icon: Icons.people_alt_outlined,
+                label: 'Leads',
+                onTap: onLeads,
+              ),
+              _QuickButton(
+                icon: Icons.travel_explore_outlined,
+                label: 'Google SEO',
+                onTap: onSeo,
+              ),
+              _QuickButton(
+                icon: Icons.query_stats_outlined,
+                label: 'Analytics',
+                onTap: onAnalytics,
+              ),
+              _QuickButton(
+                icon: Icons.auto_awesome_outlined,
+                label: 'Automation',
+                onTap: onAutomation,
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _QuickButton extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+
+  const _QuickButton({
+    required this.icon,
+    required this.label,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton.icon(
+      onPressed: onTap,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: Colors.white,
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+        side: BorderSide(
+          color: DashboardScreen._purple.withValues(alpha: .25),
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      icon: Icon(
+        icon,
+        color: DashboardScreen._cyan,
+        size: 18,
+      ),
+      label: Text(
+        label,
+        style: const TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 11,
+        ),
+      ),
+    );
+  }
+}
+
+class _MiniChip extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _MiniChip({
+    required this.icon,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 7,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white.withValues(alpha: .035),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: .07),
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: DashboardScreen._cyan,
+            size: 13,
+          ),
+          const SizedBox(width: 6),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFF9BA7BB),
+              fontSize: 8,
+              fontWeight: FontWeight.w800,
+              letterSpacing: .6,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _TopStatus extends StatelessWidget {
+  final IconData icon;
+  final String text;
+
+  const _TopStatus({
+    required this.icon,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 8,
+      ),
+      decoration: BoxDecoration(
+        color: DashboardScreen._panel,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: .06),
+        ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: DashboardScreen._green,
+            size: 13,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            text,
+            style: const TextStyle(
+              color: Color(0xFFAAB5C6),
+              fontSize: 8,
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PulseDot extends StatelessWidget {
+  const _PulseDot();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 7,
+      height: 7,
+      decoration: const BoxDecoration(
+        color: DashboardScreen._green,
+        shape: BoxShape.circle,
+        boxShadow: [
+          BoxShadow(
+            color: DashboardScreen._green,
+            blurRadius: 7,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _BackgroundGrid extends StatelessWidget {
+  const _BackgroundGrid();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(
+      painter: _GridPainter(),
+    );
+  }
+}
+
+class _GridPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.white.withValues(alpha: .018)
+      ..strokeWidth = 1;
+
+    const spacing = 46.0;
+
+    for (double x = 0; x < size.width; x += spacing) {
+      canvas.drawLine(
+        Offset(x, 0),
+        Offset(x, size.height),
+        paint,
+      );
+    }
+
+    for (double y = 0; y < size.height; y += spacing) {
+      canvas.drawLine(
+        Offset(0, y),
+        Offset(size.width, y),
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class _IntelligenceModule {
+  final String title;
+  final String subtitle;
+  final IconData icon;
+  final String badge;
+  final VoidCallback onTap;
+
+  const _IntelligenceModule({
+    required this.title,
+    required this.subtitle,
+    required this.icon,
+    required this.badge,
+    required this.onTap,
+  });
+}
