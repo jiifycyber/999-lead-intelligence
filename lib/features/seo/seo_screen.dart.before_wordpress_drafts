@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../services/wordpress_service.dart';
-
 Future<void> _showSeoOptimizer(
   BuildContext context, {
   required String query,
@@ -134,71 +132,19 @@ Future<void> _showSeoOptimizer(
           child: const Text('Close'),
         ),
         FilledButton.icon(
-          onPressed: () async {
-            final messenger = ScaffoldMessenger.of(context);
-
+          onPressed: () {
             Navigator.of(dialogContext).pop();
 
-            messenger.showSnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                duration: const Duration(seconds: 30),
-                content: Row(
-                  children: [
-                    SizedBox(
-                      width: 18,
-                      height: 18,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        'Agent Duke is creating a WordPress draft for "$cleanQuery"...',
-                      ),
-                    ),
-                  ],
+                content: Text(
+                  'Optimization prepared for "$cleanQuery".',
                 ),
               ),
             );
-
-            try {
-              final wordpress = WordPressService();
-
-              final result = await wordpress.createSeoDraft(
-                query: cleanQuery,
-                title: title,
-                meta: meta,
-              );
-
-              messenger.hideCurrentSnackBar();
-
-              messenger.showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'WORDPRESS DRAFT CREATED ✓  '
-                    'Post ID: ${result['id']}',
-                  ),
-                ),
-              );
-            } catch (e) {
-              messenger.hideCurrentSnackBar();
-
-              messenger.showSnackBar(
-                SnackBar(
-                  content: Text(
-                    'WordPress draft failed: $e',
-                  ),
-                ),
-              );
-            }
           },
-          icon: const Icon(
-            Icons.wordpress,
-          ),
-          label: const Text(
-            'Create WordPress Draft',
-          ),
+          icon: const Icon(Icons.check_circle_outline),
+          label: const Text('Save Optimization'),
         ),
       ],
     ),
@@ -416,87 +362,19 @@ class _SeoScreenState extends State<SeoScreen> {
               child: const Text('Close'),
             ),
             FilledButton.icon(
-              onPressed: () async {
-                final messenger = ScaffoldMessenger.of(context);
-
+              onPressed: () {
                 Navigator.of(dialogContext).pop();
 
-                messenger.showSnackBar(
+                ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    duration: const Duration(minutes: 5),
-                    content: Row(
-                      children: [
-                        SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                          ),
-                        ),
-                        SizedBox(width: 12),
-                        Expanded(
-                          child: Text(
-                            'Agent Duke is creating ${plans.length} WordPress drafts...',
-                          ),
-                        ),
-                      ],
+                    content: Text(
+                      'Agent Duke prepared ${plans.length} SEO optimization plans.',
                     ),
                   ),
                 );
-
-                final wordpress = WordPressService();
-
-                int created = 0;
-                final failures = <String>[];
-
-                for (final plan in plans) {
-                  final query = plan['query'].toString();
-
-                  final title = plan['title'].toString();
-
-                  final meta = plan['meta'].toString();
-
-                  try {
-                    await wordpress.createSeoDraft(
-                      query: query,
-                      title: title,
-                      meta: meta,
-                    );
-
-                    created++;
-                  } catch (e) {
-                    failures.add('$query: $e');
-                  }
-                }
-
-                messenger.hideCurrentSnackBar();
-
-                if (failures.isEmpty) {
-                  messenger.showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        '✓ Agent Duke created $created WordPress drafts.',
-                      ),
-                    ),
-                  );
-                } else {
-                  messenger.showSnackBar(
-                    SnackBar(
-                      duration: const Duration(seconds: 12),
-                      content: Text(
-                        '$created drafts created. '
-                        '${failures.length} failed.',
-                      ),
-                    ),
-                  );
-                }
               },
-              icon: const Icon(
-                Icons.wordpress,
-              ),
-              label: const Text(
-                'Create All WordPress Drafts',
-              ),
+              icon: const Icon(Icons.save_outlined),
+              label: const Text('Save All Plans'),
             ),
           ],
         );
