@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'features/leads/leads_screen.dart';
 
-import 'features/dashboard/dashboard_screen.dart';
-
 void main() {
   runApp(const MarketIntelligenceApp());
 }
@@ -25,7 +23,7 @@ class MarketIntelligenceApp extends StatelessWidget {
           surface: Color(0xFF0E1428),
         ),
       ),
-      home: const DashboardScreen(),
+      home: const IntelligenceShell(),
     );
   }
 }
