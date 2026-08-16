@@ -77,12 +77,13 @@ Deno.serve(async (req) => {
       const query = String(body.query ?? "").trim();
       const title = String(body.title ?? "").trim();
       const meta = String(body.meta ?? "").trim();
+      const requestedContent = String(body.content ?? "").trim();
 
       if (!query || !title) {
         throw new Error("query and title are required");
       }
 
-      const content = `
+      const generatedContent = `
 <h1>${escapeHtml(query)}</h1>
 
 <p>Jiffy Roadside Assistance provides fast, dependable roadside assistance for drivers who need ${escapeHtml(query)}.</p>
@@ -108,6 +109,10 @@ Deno.serve(async (req) => {
 
 <p><strong>Need help now?</strong> Contact Jiffy Roadside Assistance to request service.</p>
       `.trim();
+
+      const content = requestedContent.length > 0
+        ? requestedContent
+        : generatedContent;
 
       const response = await fetch(
         `${WP_URL.replace(/\/$/, "")}/wp-json/wp/v2/posts`,

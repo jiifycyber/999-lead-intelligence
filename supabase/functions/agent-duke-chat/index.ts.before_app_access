@@ -1,0 +1,89 @@
+import OpenAI from "npm:openai";
+
+const openai = new OpenAI({
+  apiKey: Deno.env.get("OPENAI_API_KEY"),
+});
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
+Deno.serve(async (req: Request) => {
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    const { message } = await req.json();
+
+    if (!message || typeof message !== "string") {
+      return new Response(
+        JSON.stringify({ error: "Message is required." }),
+        {
+          status: 400,
+          headers: {
+            ...corsHeaders,
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    }
+
+    const response = await openai.responses.create({
+      model: "gpt-5.6",
+      instructions: `
+You are Agent Duke the Boss, the AI operating agent inside 999 Lead Intelligence.
+
+Your job is to help operate and grow the lead-generation and CRM system.
+
+You can:
+- analyze leads and lead quality
+- help prioritize prospects
+- create follow-up strategies
+- help with sales and customer communication
+- analyze marketing and SEO information provided to you
+- help plan blogs and content
+- help improve lead conversion
+- explain CRM information clearly
+- help the owner make business decisions
+
+Be concise, practical, confident, and action-oriented.
+
+Never pretend you performed an action or accessed CRM data unless that information was actually provided to you or a connected tool performed the action.
+
+You are Agent Duke the Boss.
+`,
+      input: message,
+    });
+
+    return new Response(
+      JSON.stringify({
+        reply: response.output_text,
+        agent: "Agent Duke the Boss",
+      }),
+      {
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  } catch (error) {
+    console.error("Agent Duke error:", error);
+
+    return new Response(
+      JSON.stringify({
+        error: "Agent Duke could not complete the request.",
+      }),
+      {
+        status: 500,
+        headers: {
+          ...corsHeaders,
+          "Content-Type": "application/json",
+        },
+      },
+    );
+  }
+});

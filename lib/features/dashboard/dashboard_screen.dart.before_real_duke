@@ -9,7 +9,6 @@ import '../leads/leads_screen.dart';
 import '../marketing/marketing_screen.dart';
 import '../seo/seo_screen.dart';
 import '../settings/settings_screen.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -1236,42 +1235,20 @@ class _AgentDukeDialogState extends State<_AgentDukeDialog> {
     super.dispose();
   }
 
-  Future<void> send() async {
+  void send() {
     final text = controller.text.trim();
     if (text.isEmpty) return;
 
     setState(() {
       messages.add(text);
-      messages.add('Agent Duke is thinking...');
+      messages.add(
+        'Your Agent Duke chat interface is ready. '
+        'The existing live AI service still needs to be connected '
+        'to this send button before deployment.',
+      );
     });
 
     controller.clear();
-
-    try {
-      final response = await Supabase.instance.client.functions.invoke(
-        'agent-duke-chat',
-        body: {
-          'message': text,
-        },
-      );
-
-      final data = response.data;
-      final reply = data is Map
-          ? (data['reply']?.toString() ?? 'Agent Duke returned no response.')
-          : 'Agent Duke returned no response.';
-
-      if (!mounted) return;
-
-      setState(() {
-        messages[messages.length - 1] = reply;
-      });
-    } catch (e) {
-      if (!mounted) return;
-
-      setState(() {
-        messages[messages.length - 1] = 'Agent Duke connection error: $e';
-      });
-    }
   }
 
   @override
